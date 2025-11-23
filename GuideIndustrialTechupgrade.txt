@@ -1,0 +1,142 @@
+This is the final piece of the puzzle.
+
+To make your "Tech" section look like a mechanic's station instead of a web developer's portfolio, we will replace the floating "Balls" with **Floating Industrial Hex Nuts**.
+
+Why create a **Hex Nut** instead of downloading a Wrench?
+
+1.  **Efficiency:** You don't need to download huge 3D files. We can build a Hex Nut with 1 line of code.
+2.  **Functionality:** A Hex Nut has a flat surface, which is perfect for sticking your skill icons (PLC, Hydraulics, etc.) onto using the `Decal` system you already have. A wrench is too thin to put an icon on.
+
+Here is the code to create the **"TechPart"** component.
+
+-----
+
+# Guide: The "Industrial Tech" Upgrade
+
+### 1\. Create the Component
+
+Create a new file: `src/components/canvas/TechPart.jsx`
+Copy and paste this code. It creates a metallic, hexagonal nut that floats and displays your skill icons.
+
+```jsx
+import React, { Suspense } from "react";
+import { Canvas } from "@react-three/fiber";
+import { Decal, Float, OrbitControls, Preload, useTexture } from "@react-three/drei";
+import CanvasLoader from "../Loader";
+
+const TechPart = (props) => {
+  // 1. Load the texture (icon) passed from the parent
+  const [decal] = useTexture([props.imgUrl]);
+
+  return (
+    <Float speed={1.75} rotationIntensity={1} floatIntensity={2}>
+      <ambientLight intensity={0.25} />
+      <directionalLight position={[0, 0, 0.05]} />
+      
+      {/* 2. The Geometry: A Hexagonal Cylinder (The Nut) */}
+      <mesh castShadow receiveShadow scale={2.75}>
+        {/* args: [topRadius, bottomRadius, height, radialSegments] 
+            6 segments = Hexagon */}
+        <cylinderGeometry args={[1, 1, 1, 6]} />
+        
+        {/* 3. The Material: Shiny Industrial Steel */}
+        <meshStandardMaterial
+          color='#bfbfbf' // Silver/Grey
+          metalness={0.6} // Very metallic
+          roughness={0.2} // Slightly shiny
+          polygonOffset
+          polygonOffsetFactor={-5}
+          flatShading
+        />
+        
+        {/* 4. The Icon: Stamped onto the front face */}
+        <Decal
+          position={[0, 0, 1]} // Front of the nut
+          rotation={[2 * Math.PI, 0, 6.25]}
+          scale={1}
+          map={decal}
+          flatShading
+        />
+      </mesh>
+    </Float>
+  );
+};
+
+const TechPartCanvas = ({ icon }) => {
+  return (
+    <Canvas
+      frameloop='demand'
+      dpr={[1, 2]}
+      gl={{ preserveDrawingBuffer: true }}
+    >
+      <Suspense fallback={<CanvasLoader />}>
+        <OrbitControls enableZoom={false} />
+        <TechPart imgUrl={icon} />
+      </Suspense>
+
+      <Preload all />
+    </Canvas>
+  );
+};
+
+export default TechPartCanvas;
+```
+
+### 2\. Update the Export List
+
+You need to tell the app this new component exists.
+Open `src/components/canvas/index.js` and update it:
+
+```javascript
+import EarthCanvas from "./Earth";
+import BallCanvas from "./Ball";
+import ComputersCanvas from "./Computers";
+import StarsCanvas from "./Stars";
+// Add this line:
+import TechPartCanvas from "./TechPart"; 
+
+export {
+  EarthCanvas,
+  BallCanvas,
+  ComputersCanvas,
+  StarsCanvas,
+  TechPartCanvas, // Export it here
+};
+```
+
+### 3\. Update the Tech Section
+
+Now, tell the "Tech" section to use the new Nut instead of the old Ball.
+Open `src/components/Tech.jsx`:
+
+```jsx
+import React from "react";
+import { SectionWrapper } from "../hoc";
+import { technologies } from "../constants";
+// CHANGE 1: Import the new component
+import { TechPartCanvas } from "./canvas"; 
+
+const Tech = () => {
+    return (
+        <div className='flex flex-row flex-wrap justify-center gap-10'>
+            {technologies.map((technology) => (
+                <div className='w-28 h-28' key={technology.name}>
+                    {/* CHANGE 2: Use TechPartCanvas instead of BallCanvas */}
+                    <TechPartCanvas icon={technology.icon} />
+                </div>
+            ))}
+        </div>
+    );
+};
+
+const TechSection = SectionWrapper(Tech, "");
+export default TechSection;
+```
+
+### 4\. Final Result
+
+When you run the site (`npm run dev`):
+
+  * Instead of white balls, you will see **floating silver hex nuts**.
+  * Each nut will have one of your mechanic icons (Hydraulics, Pneumatics, etc.) "printed" on the front face.
+  * It will look exactly like a mechanic's spare parts bin floating in zero gravity.

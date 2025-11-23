@@ -1,0 +1,194 @@
+This is a fantastic pivot. A **3D Portfolio for an Industrial Mechanic** is incredibly unique and will stand out immediately to supervisors at Niagara.
+
+Most mechanics just hand in a paper resume. You are going to hand them a **3D Interactive Production Line**.
+
+We will keep the **"Modern Hybrid"** architecture (Liquid 3D Text) because it's efficient, but we will completely re-skin it to look **Industrial, Metallic, and Niagara-branded**.
+
+Here is your tailored **"Krones Shift Mechanic" Portfolio Guide**.
+
+-----
+
+# Guide: The "Krones Line" Industrial Portfolio
+
+**Goal:** Create a site that feels like a high-tech machine interface.
+**Visual Theme:** "Niagara Blue" liquid metal, industrial greys, and clean manufacturing typography.
+**Content:** Focus strictly on the Krones line (Blower → Palletizer).
+
+## Phase 1: The "Niagara Blue" 3D Hero
+
+We need to change the purple "Space" text to a "Water/Industrial" look.
+
+**Action:** Update `src/components/Hero3D.jsx`.
+Change the `color` in the material to Niagara's corporate blue (`#00a3e0`) or a metallic silver (`#cfcfcf`).
+
+**Code Update (`src/components/Hero3D.jsx`):**
+
+```jsx
+// ... (imports remain the same)
+
+<Text3D
+  font="/fonts/helvetiker_bold.typeface.json"
+  size={1.2}
+  // ... (other settings remain the same)
+>
+  {/* CHANGE 1: Update Text to your Title */}
+  NIAGARA MECHANIC
+  
+  {/* CHANGE 2: Update Material to "Water/Metal" */}
+  <MeshDistortMaterial
+    color="#00a3e0"   // Niagara Blue
+    envMapIntensity={1} // High reflection (Shiny like steel)
+    clearcoat={1}       // Wet look (Water bottles)
+    metalness={0.5}     // Semi-metallic
+    roughness={0.1}     // Very smooth
+    speed={3}           // Fast moving liquid
+    distort={0.4}
+  />
+</Text3D>
+```
+
+-----
+
+## Phase 2: The "Production Line" (Your Experience)
+
+This is the most important part. We need to replace the default "Web Developer" experience with your actual Krones machinery training.
+
+**Action:** Open `src/constants/index.js`.
+**Task:** Replace the `experiences` array with your specific machine training.
+
+**Code Update (`src/constants/index.js`):**
+
+```javascript
+// REPLACE the existing 'experiences' array with this:
+
+export const experiences = [
+  {
+    title: "Blow Molder Specialist",
+    company_name: "Krones Contiform",
+    icon: "krones", // We will fix icons in Phase 4
+    iconBg: "#E6DEDD", // Light grey industrial background
+    date: "Machine #1 - The Start",
+    points: [
+      "Mastery of preform heating profiles and stretching rods.",
+      "Troubleshooting high-pressure air faults and mold changeovers.",
+      "Ensuring bottle integrity and dimensional stability before filling.",
+    ],
+  },
+  {
+    title: "Filler & Capper Operator",
+    company_name: "Krones Modulfill",
+    icon: "niagara",
+    iconBg: "#383E56", // Dark blue industrial background
+    date: "Machine #2 - Critical Control",
+    points: [
+      "Managing volumetric filling valves and flow meters.",
+      "Troubleshooting cap feeder jams and torque heads.",
+      "Maintaining sterile conditions and CIP (Clean-in-Place) protocols.",
+    ],
+  },
+  {
+    title: "Labeler Mechanic",
+    company_name: "Krones Contiroll",
+    icon: "krones",
+    iconBg: "#E6DEDD",
+    date: "Machine #3 - High Speed",
+    points: [
+      "Precision alignment of vacuum cylinders and cutting drums.",
+      "Troubleshooting hot melt glue application and label transfer.",
+      "Optimizing timing screws for high-speed bottle handling.",
+    ],
+  },
+  {
+    title: "Packer & Palletizer",
+    company_name: "Krones Variopac / Modulpal",
+    icon: "niagara",
+    iconBg: "#383E56",
+    date: "Machine #4 - End of Line",
+    points: [
+      "Servicing robotic arms and layer formation tables.",
+      "Troubleshooting film wrapping tension and heat tunnels.",
+      "Maintaining chain conveyors and servo-motor synchronization.",
+    ],
+  },
+];
+```
+
+-----
+
+## Phase 3: The "Toolbox" (Your Tech Stack)
+
+You are a mechanic, not a coder. Your "Tech Stack" isn't HTML/CSS; it's your tools and skills.
+
+**Action:** Still in `src/constants/index.js`.
+**Task:** Replace `technologies` with your mechanical skills.
+
+**Code Update:**
+
+```javascript
+// REPLACE the existing 'technologies' array with this:
+
+export const technologies = [
+  {
+    name: "Hydraulics",
+    icon: "hydraulics", // You will need to find icons for these
+  },
+  {
+    name: "Pneumatics",
+    icon: "pneumatics",
+  },
+  {
+    name: "Schematics",
+    icon: "schematics",
+  },
+  {
+    name: "PLC Logic",
+    icon: "plc",
+  },
+  {
+    name: "LOTO Safety",
+    icon: "safety",
+  },
+  {
+    name: "Multi-meter",
+    icon: "multimeter",
+  },
+];
+```
+
+-----
+
+## Phase 4: Getting the Icons
+
+The code above references icons like `"krones"`, `"hydraulics"`, etc. You need to download images for these.
+
+1.  **Find Images:** Go to Google Images and search for "Hydraulic Icon PNG", "Gear Icon PNG", "Krones Logo PNG".
+2.  **Save Them:** Save them into your project folder at `src/assets/`.
+3.  **Import Them:** Open `src/assets/index.js` and register them.
+
+**Code Update (`src/assets/index.js`):**
+
+```javascript
+// Add these lines to the top
+import krones from "./krones.png";
+import niagara from "./niagara.png";
+import hydraulics from "./hydraulics.png";
+// ... import the rest
+
+// Add them to the export list
+export {
+  // ... existing exports
+  krones,
+  niagara,
+  hydraulics,
+};
+```
+
+-----
+
+## Summary of the Mechanic Build
+
+1.  **Hero:** "Niagara Blue" Liquid Metal text.
+2.  **Experience:** Timeline of the entire bottle journey (Blower -\> Palletizer).
+3.  **Skills:** Floating 3D balls that show gears, wrenches, and electrical symbols instead of coding logos.
+
+This will look incredible. Would you like me to help you find a specific **3D icon** (like a gear or wrench) to replace the floating balls in the "Tech" section later?

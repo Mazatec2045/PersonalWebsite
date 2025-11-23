@@ -1,15 +1,52 @@
+import { useState } from 'react';
+import InteractiveHero from './components/InteractiveHero';
+import { Navbar, About, Experience, Tech, Works, Contact, Hero } from './components';
+import { StarsCanvas } from './components/canvas';
+
+/**
+ * Main App Component - Hybrid 3D Portfolio
+ * 
+ * Structure:
+ * 1. Fixed Landing Page (InteractiveHero) - Full screen 3D experience
+ * 2. Scrollable Portfolio Sections - Traditional portfolio content
+ */
 const App = () => {
+  const [showLanding, setShowLanding] = useState(true);
+
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-gray-900 via-purple-900 to-blue-900">
-      <div className="text-center px-4">
-        <img 
-          src="/coming-soon.png" 
-          alt="Website Coming Soon - Work in Progress" 
-          className="max-w-4xl w-full h-auto rounded-lg shadow-2xl"
-        />
+    <div className="relative">
+      {/* Fixed 3D Landing Page */}
+      {showLanding && (
+        <div className="fixed inset-0 z-50">
+          <InteractiveHero />
+        </div>
+      )}
+
+      {/* Scrollable Portfolio Content */}
+      <div id="portfolio" className="relative z-0 bg-primary">
+        {/* Add padding-top to account for landing page */}
+        <div className="h-screen" /> {/* Spacer for landing page */}
+
+        <div className="relative z-0">
+          <Navbar />
+
+          <div className="bg-hero-pattern bg-cover bg-no-repeat bg-center">
+            <Hero />
+          </div>
+
+          <About />
+          <Experience />
+          <Tech />
+          <Works />
+
+          <div className="relative z-0">
+            <Contact />
+            <StarsCanvas />
+          </div>
+        </div>
       </div>
     </div>
   );
-}
+};
 
 export default App;
