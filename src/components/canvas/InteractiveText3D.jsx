@@ -4,12 +4,24 @@ import { Text3D, MeshDistortMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 
 /**
+
  * Interactive 3D Text Component with distortion and mouse parallax
  * 
  * Features:
  * - Wave-like distortion using MeshDistortMaterial (no custom shaders)
  * - Smooth mouse parallax rotation
  * - Easy to upgrade to custom GLSL shaders later
+ */
+const InteractiveText3D = ({ text, color = "#915EFF", distortionSpeed = 0.5, distortionStrength = 0.3 }) => {
+    const meshRef = useRef();
+    const { mouse } = useThree();
+
+    // Target rotation for smooth interpolation
+    const targetRotation = useRef(new THREE.Vector2(0, 0));
+
+    useFrame(() => {
+        if (!meshRef.current) return;
+
         // Mouse values are normalized from -1 to 1
         targetRotation.current.x = mouse.y * 0.15; // Subtle vertical rotation
         targetRotation.current.y = mouse.x * 0.15; // Subtle horizontal rotation
@@ -20,32 +32,18 @@ import * as THREE from 'three';
         meshRef.current.rotation.y += (targetRotation.current.y - meshRef.current.rotation.y) * lerpFactor;
     });
 
+    const materialConfig = useMemo(() => ({
+        color: color,
+        speed: distortionSpeed,
+        distort: distortionStrength,
+        radius: 1,
+    }), [color, distortionSpeed, distortionStrength]);
+
     return (
-        <mesh ref={meshRef}>
-            <Text3D
-                font="/fonts/helvetiker_bold.typeface.json"
-                size={1.2}
-                height={0.2}
-                curveSegments={12}
-                bevelEnabled
-                bevelThickness={0.02}
-                bevelSize={0.02}
-                bevelOffset={0}
-                bevelSegments={5}
-                // Center the text
-                position={[-3.5, 0, 0]}
-            >
-                {text}
-                {/* 
-          MeshDistortMaterial provides animated distortion
-          To upgrade to custom shaders later, replace this with:
-          <shaderMaterial uniforms={uniforms} vertexShader={vs} fragmentShader={fs} />
-        */}
-<MeshDistortMaterial
-    {...materialConfig}
-/>
-            </Text3D >
-        </mesh >
+        <mesh ref={meshRef} scale={[2, 2, 2]}>
+            <boxGeometry />
+            <meshStandardMaterial color="hotpink" />
+        </mesh>
     );
 };
 

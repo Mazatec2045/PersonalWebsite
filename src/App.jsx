@@ -18,7 +18,7 @@ const App = () => {
       {/* Fixed 3D Landing Page */}
       {showLanding && (
         <div className="fixed inset-0 z-50">
-          <InteractiveHero />
+          <InteractiveHero onExplore={() => setShowLanding(false)} />
         </div>
       )}
 
